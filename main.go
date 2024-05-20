@@ -3,39 +3,47 @@ package main
 import (
 	"flag"
 	"fmt"
-
-	"github.com/nitishfy/wc-tool/files"
+	"github.com/nitishfy/wc-tool/internals"
 )
 
 func main() {
-	bytesCount := flag.Bool("c",false,"count the number of bytes")
-	linesCount := flag.Bool("l", false, "count the number of lines")
-	wordsCount := flag.Bool("w", false, "count the number of words")
+	countBytes := flag.Bool("c",false,"count the number of bytes in a file")
+	countLines := flag.Bool("l",false, "count the number of lines in a file")
+	countWords := flag.Bool("w", false, "count the number of words in a file")
+	countChars := flag.Bool("m", false, "count the number of characters in a file")
 	flag.Parse()
+
 	filepaths := flag.Args()
+	
 	for _, file := range filepaths {
-		// check if file exists
-		exists := files.FileExists(file)
+		exists := internals.FileExists(file)
 		if !exists {
-			fmt.Printf("wc: %s: No such file or directory\n", file)
+			fmt.Printf("wc: %s No such file or directory\n", file)
 			break
 		}
 
-		if *bytesCount {
-			bytes := files.CountBytes(file)	
-			fmt.Printf("%d %s\n",bytes,file)	
-		}
-		
-		if *linesCount {
-			lines := files.CountLines(file)
-			fmt.Printf("%d %s\n",lines, file)
+		bytes := internals.CountBytes(file)
+		lines, words, char := internals.Count(file)
+
+		// count the number of bytes
+		if *countBytes {
+			fmt.Printf("%d %s\n",bytes, file)
 		}
 
-		if *wordsCount {
-			words := files.CountWords(file)
-			fmt.Printf("%d %s\n", words, file)
-		}
+		// count the number of lines/words
+		if *countLines || *countWords  || *countChars{
+			if *countLines {
+				fmt.Printf("%d %s\n", lines, file)
+			}
 
+			if *countWords {
+				fmt.Printf("%d %s\n", words, file)
+			}
+			
+			if *countChars {
+				fmt.Printf("%d %s\n", char, file)
+			}
+		}
 	}
 }
 
