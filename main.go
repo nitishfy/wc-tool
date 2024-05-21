@@ -7,10 +7,10 @@ import (
 )
 
 func main() {
-	countBytes := flag.Bool("c",false,"count the number of bytes in a file")
-	countLines := flag.Bool("l",false, "count the number of lines in a file")
+	countBytes := flag.Bool("c", false,"count the number of bytes in a file")
+	countLines := flag.Bool("l", false, "count the number of lines in a file")
 	countWords := flag.Bool("w", false, "count the number of words in a file")
-	countChars := flag.Bool("m", false, "count the number of characters in a file")
+	countChars := flag.Bool("m", false, "count the number of characters in a file")	
 	flag.Parse()
 
 	filepaths := flag.Args()
@@ -22,28 +22,22 @@ func main() {
 			break
 		}
 
-		bytes := internals.CountBytes(file)
-		lines, words, char := internals.Count(file)
+		lines, words, char := internals.Count(file)	
 
-		// count the number of bytes
-		if *countBytes {
-			fmt.Printf("%d %s\n",bytes, file)
+		switch {
+		case *countBytes:
+			fmt.Printf("%d ", internals.CountBytes(file))
+		case *countLines: 
+			fmt.Printf("%d ", lines)
+		case *countWords:
+			fmt.Printf("%d ", words)
+		case *countChars:
+			fmt.Printf("%d ", char)
+		default:
+			fmt.Printf("%d %d %d ", lines, words, internals.CountBytes(file))				
 		}
 
-		// count the number of lines/words
-		if *countLines || *countWords  || *countChars{
-			if *countLines {
-				fmt.Printf("%d %s\n", lines, file)
-			}
-
-			if *countWords {
-				fmt.Printf("%d %s\n", words, file)
-			}
-			
-			if *countChars {
-				fmt.Printf("%d %s\n", char, file)
-			}
-		}
+		fmt.Printf("%s\n", file)
 	}
 }
 
