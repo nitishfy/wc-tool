@@ -1,66 +1,86 @@
 package internals
 
 import (
-	"os"
-	"fmt"
-	"strings"
 	"bufio"
-	"unicode/utf8"
+	"os"
+
 )
 
+type FileHandler struct {
+	FilePath string
+	count int
+}
+
 // FileExists check if the file exists
-func FileExists(path string) bool {
-	if _, err := os.Stat(path); err != nil {
+func (f *FileHandler) FileExists() bool {
+	if _, err := os.Stat(f.FilePath); err != nil {
 		return false
 	}
 
 	return true
 }
 
-func CountBytes(path string) int64 {
-	file, _ := os.Stat(path)
-	return file.Size()	 
+func (f *FileHandler) OpenFile() (*os.File, error) {
+	file, err := os.Open(f.FilePath)
+	if err != nil {
+		return nil, err
+	}
+	
+	return file,nil
 }
 
-func Count(path string) (int64,int64,int64) {
-	file, err := OpenFile(path)
+func (f *FileHandler) CountBytes() {
+	file, err := f.OpenFile()
 	if err != nil {
-		fmt.Printf("error opening the file: %v", err)
-		panic(err)
+		return 
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	lines := 0
-	wordCount := 0
-	charCount := 0
-
+	scanner.Split(bufio.ScanBytes)
 	for scanner.Scan() {
-		// calculate number of lines
-		lines++
-
-		// calculate number of characters
-		line := scanner.Text()
-		charCount += utf8.RuneCountInString(line) + 1 // +1 to include the newline character
-
-		// calculate number of words
-		words := strings.Fields(line)
-		wordCount += len(words) 
+		f.count++
 	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Printf("error: %v", err)
-		panic(err)
-	}
-
-	return int64(lines), int64(wordCount), int64(charCount)
 }
 
-func OpenFile(path string) (*os.File, error) {
-	file, err := os.Open(path)
+func (f *FileHandler) CountLines() {
+	file, err := f.OpenFile()
 	if err != nil {
-		return &os.File{},nil
+		return 
 	}
+	defer file.Close()
 
-	return file, err
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		f.count++
+	}
+}
+
+func (f *FileHandler) CountWords() {
+	file, err := f.OpenFile()
+	if err != nil {
+		return 
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanWords)
+	for scanner.Scan() {
+		f.count++
+	}
+}
+
+func (f *FileHandler) CountChars() {
+	file, err := f.OpenFile()
+	if err != nil {
+		return
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanRunes)
+	for scanner.Scan() {
+		f.count++
+	}
 }

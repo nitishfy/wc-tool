@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/nitishfy/wc-tool/internals"
 )
 
 func main() {
@@ -13,31 +12,15 @@ func main() {
 	countChars := flag.Bool("m", false, "count the number of characters in a file")	
 	flag.Parse()
 
-	filepaths := flag.Args()
-	
-	for _, file := range filepaths {
-		exists := internals.FileExists(file)
-		if !exists {
-			fmt.Printf("wc: %s No such file or directory\n", file)
-			break
-		}
-
-		lines, words, char := internals.Count(file)	
-
-		switch {
-		case *countBytes:
-			fmt.Printf("%d ", internals.CountBytes(file))
-		case *countLines: 
-			fmt.Printf("%d ", lines)
-		case *countWords:
-			fmt.Printf("%d ", words)
-		case *countChars:
-			fmt.Printf("%d ", char)
-		default:
-			fmt.Printf("%d %d %d ", lines, words, internals.CountBytes(file))				
-		}
-
-		fmt.Printf("%s\n", file)
+	// default case when no argument is passed
+	if !*countBytes || !*countLines || !*countWords {
+		*countBytes, *countLines, *countChars = true, true, true
 	}
+	file := flag.Arg(0)
+	if file == "" {
+		fmt.Printf("Please provide the file path")
+		return
+	}
+
 }
 
