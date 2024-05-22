@@ -41,7 +41,7 @@ func main() {
 
 		// stdin is empty too - it means no file has been passed
 		if isEmpty {
-			fmt.Printf("Pass a file as an argument")
+			fmt.Printf("Pass a file as an argumentPass a file as an argument or provide input via stdin")
 			return 
 		}
 		
@@ -50,13 +50,13 @@ func main() {
 
 	switch {
 	case *countBytes:
-		fmt.Printf("Bytes: %d\n", handler.CountBytes())
+		fmt.Printf("Bytes: %d", handler.CountBytes())
 	case *countLines:
-		fmt.Printf("Lines: %d\n", handler.CountLines())
+		fmt.Printf("Lines: %d", handler.CountLines())
 	case *countChars:
-		fmt.Printf("Chars: %d\n", handler.CountChars())	
+		fmt.Printf("Chars: %d", handler.CountChars())	
 	case *countWords:
-		fmt.Printf("Words: %d\n", handler.CountWords())
+		fmt.Printf("Words: %d", handler.CountWords())
 	default:
 		fmt.Printf("%d %d %d ", handler.CountLines(), handler.CountWords(), handler.CountBytes())			
 	}

@@ -20,6 +20,7 @@ func FileExists(path string) bool {
 	return true
 }
 
+// OpenFile opens a file 
 func (f *FileHandler) OpenFile() (*os.File, error) {
 	file, err := os.Open(f.FilePath)
 	if err != nil {
@@ -29,6 +30,7 @@ func (f *FileHandler) OpenFile() (*os.File, error) {
 	return file,nil
 }
 
+// CountBytes counts the total number of bytes in a file
 func (f *FileHandler) CountBytes() int {
 	file, err := f.OpenFile()
 	if err != nil {
@@ -46,6 +48,7 @@ func (f *FileHandler) CountBytes() int {
 	return bytes
 }
 
+// CountLines counts the total number of lines in a file
 func (f *FileHandler) CountLines() int {
 	file, err := f.OpenFile()
 	if err != nil {
@@ -63,6 +66,7 @@ func (f *FileHandler) CountLines() int {
 	return lines
 }
 
+// CountWords counts the total number of words in a file
 func (f *FileHandler) CountWords() int {
 	file, err := f.OpenFile()
 	if err != nil {
@@ -80,6 +84,7 @@ func (f *FileHandler) CountWords() int {
 	return words
 }
 
+// CountChars counts the total number of characters in a file
 func (f *FileHandler) CountChars() int {
 	file, err := f.OpenFile()
 	if err != nil {
