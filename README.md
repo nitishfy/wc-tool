@@ -59,7 +59,7 @@ Here are some examples to use the wc tool:
   cat test.txt | ./wc -m
   ```
 
-  ## 5. How to contribute?
+## 5. How to contribute?
 
 Thank you for considering contributing to this project! We welcome your contributions and support in making this project better.
 
