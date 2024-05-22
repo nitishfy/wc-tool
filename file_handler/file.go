@@ -1,4 +1,4 @@
-package internals
+package file_handler
 
 import (
 	"bufio"
@@ -8,12 +8,12 @@ import (
 
 type FileHandler struct {
 	FilePath string
-	count int
+	// count int 
 }
 
 // FileExists check if the file exists
-func (f *FileHandler) FileExists() bool {
-	if _, err := os.Stat(f.FilePath); err != nil {
+func FileExists(path string) bool {
+	if _, err := os.Stat(path); err != nil {
 		return false
 	}
 
@@ -29,58 +29,70 @@ func (f *FileHandler) OpenFile() (*os.File, error) {
 	return file,nil
 }
 
-func (f *FileHandler) CountBytes() {
+func (f *FileHandler) CountBytes() int {
 	file, err := f.OpenFile()
 	if err != nil {
-		return 
+		return 0
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanBytes)
+	var bytes int
 	for scanner.Scan() {
-		f.count++
+		bytes++
 	}
+
+	return bytes
 }
 
-func (f *FileHandler) CountLines() {
+func (f *FileHandler) CountLines() int {
 	file, err := f.OpenFile()
 	if err != nil {
-		return 
+		return 0
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
+	var lines int
 	for scanner.Scan() {
-		f.count++
+		lines++
 	}
+
+	return lines
 }
 
-func (f *FileHandler) CountWords() {
+func (f *FileHandler) CountWords() int {
 	file, err := f.OpenFile()
 	if err != nil {
-		return 
+		return 0
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanWords)
+	var words int
 	for scanner.Scan() {
-		f.count++
+		words++
 	}
+
+	return words
 }
 
-func (f *FileHandler) CountChars() {
+func (f *FileHandler) CountChars() int {
 	file, err := f.OpenFile()
 	if err != nil {
-		return
+		return 0
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanRunes)
+	var chars int	
 	for scanner.Scan() {
-		f.count++
+		chars++
 	}
+
+	return chars
 }

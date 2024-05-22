@@ -1,4 +1,4 @@
-package main
+package stdin_handler
 
 import (
 	"bufio"
@@ -7,37 +7,49 @@ import (
 )
 
 type StdinHandler struct {
-	count int
+	// count int
 }
 
-func (s *StdinHandler) CountBytes() {
+func (s *StdinHandler) CountBytes() int {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(bufio.ScanBytes)
+	var bytes int
 	for scanner.Scan() {
-		s.count++
+		bytes++
 	}
+
+	return bytes
 }
 
-func (s *StdinHandler) CountLines() {
+func (s *StdinHandler) CountLines() int {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(bufio.ScanLines)
+	var lines int
 	for scanner.Scan() {
-		s.count++
+		lines++
 	}
+
+	return lines
 }
 
-func (s *StdinHandler) CountWords() {
+func (s *StdinHandler) CountWords() int {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(bufio.ScanWords)
+	var words int
 	for scanner.Scan() {
-		s.count++
+		words++
 	}
+
+	return words
 }
 
-func (s *StdinHandler) CountChars() {
+func (s *StdinHandler) CountChars() int {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(bufio.ScanRunes)
+	var chars int
 	for scanner.Scan() {
-		s.count++
+		chars++
 	}
+
+	return chars
 }
