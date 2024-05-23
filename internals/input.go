@@ -35,7 +35,7 @@ func ProcessFiles(files []string, options Options) {
 			log.Fatal(err)
 		}
 		defer fi.Close()
-		
+
 		handler := NewHandler(fi, file)
 		handler.Process(options)
 	}
@@ -88,7 +88,7 @@ func (h *Handler) PrintCounts(bytes,lines,chars,words int, options Options) {
 	}
 
 	if !options.CountLines && !options.CountWords && !options.CountBytes && !options.CountChars {
-		fmt.Printf("Lines:%d\nWords:%d\nBytes:%dChars:%d\n", lines, words, bytes, chars)
+		fmt.Printf("Lines:%d\nWords:%d\nBytes:%d\nChars:%d\n", lines, words, bytes, chars)
 	}
 
 	fmt.Println()
