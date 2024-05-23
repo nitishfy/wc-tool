@@ -35,6 +35,7 @@ func ProcessFiles(files []string, options Options) {
 			log.Fatal(err)
 		}
 		defer fi.Close()
+		
 		handler := NewHandler(fi, file)
 		handler.Process(options)
 	}
