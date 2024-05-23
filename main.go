@@ -41,7 +41,7 @@ func main() {
 
 		// stdin is empty too - it means no file has been passed
 		if isEmpty {
-			fmt.Printf("Pass a file as an argumentPass a file as an argument or provide input via stdin")
+			fmt.Printf("Pass a file as an argument or provide input via stdin")
 			return 
 		}
 		
