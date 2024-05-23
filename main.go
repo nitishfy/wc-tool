@@ -2,78 +2,30 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"log"
 	"os"
-
-	"github.com/nitishfy/wc-tool/file_handler"
-	"github.com/nitishfy/wc-tool/interfaces"
-	"github.com/nitishfy/wc-tool/stdin_handler"
+	"github.com/nitishfy/wc-tool/internals"
 )
 
 func main() {
-	countBytes := flag.Bool("c", false,"count the number of bytes in a file")
-	countLines := flag.Bool("l", false, "count the number of lines in a file")
-	countWords := flag.Bool("w", false, "count the number of words in a file")
-	countChars := flag.Bool("m", false, "count the number of characters in a file")	
+	countBytes := flag.Bool("c", false, "count the number of bytes")
+	countLines := flag.Bool("l", false, "count the number of lines")
+	countWords := flag.Bool("w", false, "count the number of words")
+	countChars := flag.Bool("m", false, "count the number of chars")
 	flag.Parse()
 
-	file := flag.Arg(0)
-	var handler interfaces.WC
+	options := internals.Options{
+		CountBytes: *countBytes,
+		CountLines: *countLines,
+		CountChars: *countChars,
+		CountWords: *countWords,
+	}
 
-	if file != "" {
-		handler = &file_handler.FileHandler{
-			FilePath: file,
-		}
+	files := flag.Args()
 
-		// check if file exists locally
-		exists := file_handler.FileExists(file)
-		if !exists {
-			fmt.Printf("%s does not exist\n", file)
-			return 
-		}
+	if len(files) == 0 {
+		handler := internals.NewHandler(os.Stdin,"")
+		handler.Process(options)
 	} else {
-		// check from stdin
-		isEmpty, err := EmptyStdin()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		// stdin is empty too - it means no file has been passed
-		if isEmpty {
-			fmt.Printf("Pass a file as an argument or provide input via stdin")
-			return 
-		}
-		
-		handler = &stdin_handler.StdinHandler{}
+		internals.ProcessFiles(files,options)
 	}
-
-	switch {
-	case *countBytes:
-		fmt.Printf("Bytes: %d", handler.CountBytes())
-	case *countLines:
-		fmt.Printf("Lines: %d", handler.CountLines())
-	case *countChars:
-		fmt.Printf("Chars: %d", handler.CountChars())	
-	case *countWords:
-		fmt.Printf("Words: %d", handler.CountWords())
-	default:
-		fmt.Printf("%d %d %d ", handler.CountLines(), handler.CountWords(), handler.CountBytes())			
-	}
-
-	fmt.Printf("%s", file)
-}
-
-// EmptyStdin checks if the Stdin is empty
-func EmptyStdin() (bool, error) {
-  fi, err := os.Stdin.Stat()
-  if err != nil {
-    log.Fatal(err)
-  }
-  
-  if fi.Mode() & os.ModeNamedPipe == 0 {
-    return true, nil
-  } 
-
-  return false, nil
 }
