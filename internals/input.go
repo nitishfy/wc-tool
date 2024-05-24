@@ -48,7 +48,9 @@ func (h *Handler) Process(options Options) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		lines++
+		
 		bytes += len(line) + 1
+
 		chars += len([]rune(line)) + 1 
 
 		wordScanner := bufio.NewScanner(strings.NewReader(line))
