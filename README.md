@@ -7,7 +7,7 @@ WC is a command line tool written in Go that matches the functionality of the Un
 
 ## 2. How to use the wc tool?
 
-For testing purpose, there is ![test.txt](/test.txt) file present at the root of the repository that you can use to test the functionalities. 
+For testing purposes, there is ![test.txt](/test.txt) file present at the root of the repository that you can use to test the functionalities. 
 
 Here are some examples to use the wc tool:
 
@@ -59,7 +59,7 @@ Here are some examples to use the wc tool:
   cat test.txt | ./wc -m
   ```
 
-## 5. How to contribute?
+## 3. How to contribute?
 
 Thank you for considering contributing to this project! We welcome your contributions and support in making this project better.
 
